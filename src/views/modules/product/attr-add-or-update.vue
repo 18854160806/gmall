@@ -17,7 +17,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="值类型" prop="valueType">
+     <!-- <el-form-item label="值类型" prop="valueType">
         <el-switch
           v-model="dataForm.valueType"
           active-text="允许多个值"
@@ -27,7 +27,7 @@
           :inactive-value="0"
           :active-value="1"
         ></el-switch>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="可选值" prop="valueSelect">
         <!-- <el-input v-model="dataForm.valueSelect"></el-input> -->
         <el-select
@@ -99,7 +99,7 @@ export default {
         attrId: 0,
         attrName: "",
         searchType: 0,
-        valueType: 1,
+        //valueType: null,
         icon: "",
         valueSelect: "",
         attrType: 1,
@@ -121,13 +121,13 @@ export default {
             trigger: "blur"
           }
         ],
-        valueType: [
+     /*   valueType: [
           {
             required: true,
             message: "值类型不能为空",
             trigger: "blur"
           }
-        ],
+        ],*/
         icon: [
           { required: true, message: "属性图标不能为空", trigger: "blur" }
         ],
@@ -216,7 +216,7 @@ export default {
             if (data && data.code === 0) {
               this.dataForm.attrName = data.attr.attrName;
               this.dataForm.searchType = data.attr.searchType;
-              this.dataForm.valueType = data.attr.valueType;
+              //this.dataForm.valueType = data.attr.valueType;
               this.dataForm.icon = data.attr.icon;
               this.dataForm.valueSelect = data.attr.valueSelect.split(";");
               this.dataForm.attrType = data.attr.attrType;
