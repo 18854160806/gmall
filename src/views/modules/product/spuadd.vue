@@ -392,12 +392,12 @@ export default {
         brandId: [
           { required: true, message: "请选择一个品牌", trigger: "blur" }
         ],
-        decript: [
+    /*    decript: [
           { required: true, message: "请上传商品详情图集", trigger: "blur" }
         ],
         images: [
           { required: true, message: "请上传商品图片集", trigger: "blur" }
-        ],
+        ],*/
         weight: [
           {
             type: "number",
@@ -430,15 +430,18 @@ export default {
       let imgArr = Array.from(new Set(this.spu.images.concat(val)));
 
       //{imgUrl:"",defaultImg:0} 由于concat每次迭代上次，有很多重复。所以我们必须得到上次+这次的总长
+      debugger;
+      if(this.spu.skus){
+        this.spu.skus.forEach((item, index) => {
+          let len = imgArr.length - this.spu.skus[index].images.length; //还差这么多
+          if (len > 0) {
+            let imgs = new Array(len);
+            imgs = imgs.fill({ imgUrl: "", defaultImg: 0 });
+            this.spu.skus[index].images = item.images.concat(imgs);
+          }
+        });
+      }
 
-      this.spu.skus.forEach((item, index) => {
-        let len = imgArr.length - this.spu.skus[index].images.length; //还差这么多
-        if (len > 0) {
-          let imgs = new Array(len);
-          imgs = imgs.fill({ imgUrl: "", defaultImg: 0 });
-          this.spu.skus[index].images = item.images.concat(imgs);
-        }
-      });
 
       this.spu.images = imgArr; //去重
       console.log("this.spu.skus", this.spu.skus);
@@ -458,13 +461,13 @@ export default {
         brandId: "",
         weight: "",
         publishStatus: 0,
-        decript: [], 
-        images: [], 
+        decript: [],
+        images: [],
         bounds: {
           buyBounds: 0,
           growBounds: 0
         },
-        baseAttrs: [], 
+        baseAttrs: [],
         skus: []
       };
     },
@@ -676,14 +679,16 @@ export default {
           //先对表单的baseAttrs进行初始化
           data.data.forEach(item => {
             let attrArray = [];
-            item.attrs.forEach(attr => {
-              attrArray.push({
-                attrId: attr.attrId,
-                attrValues: "",
-                showDesc: attr.showDesc
+            if(item.attrs){
+              item.attrs.forEach(attr => {
+                attrArray.push({
+                  attrId: attr.attrId,
+                  attrValues: "",
+                  showDesc: attr.showDesc
+                });
               });
-            });
-            this.dataResp.baseAttrs.push(attrArray);
+              this.dataResp.baseAttrs.push(attrArray);
+            }
           });
           this.dataResp.steped[0] = 0;
           this.dataResp.attrGroups = data.data;
